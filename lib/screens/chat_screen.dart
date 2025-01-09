@@ -1,4 +1,3 @@
-import 'package:chat_app/utilies/not.dart';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -24,19 +23,14 @@ class _ChatScreenState extends State<ChatScreen> {
   void connectToServer() {
     socket = IO.io('http://localhost:3000', <String, dynamic>{
       'transports': ['websocket'],
-      'autoConnect': false,
+      'autoConnect': true, // Автоматик холболт
     });
-
-    socket.connect();
 
     // Зурвас хүлээн авах
     socket.on('receiveMessage', (data) {
       setState(() {
-        messages.add(data);
+        messages.add("Бот: ${data['message']}");
       });
-
-      // Мэдэгдэл харуулах
-      showNotification(data);
     });
   }
 
@@ -53,7 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Чат Програм', style: TextStyle(color: Colors.white)),
+        title: const Text('Чат aпп', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.blueAccent,
         elevation: 4.0,
       ),
