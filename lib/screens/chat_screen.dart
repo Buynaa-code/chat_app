@@ -1,4 +1,6 @@
+import 'package:chat_app/screens/loginScreen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class ChatScreen extends StatefulWidget {
@@ -12,6 +14,20 @@ class _ChatScreenState extends State<ChatScreen> {
   late IO.Socket socket;
   TextEditingController messageController = TextEditingController();
   List<String> messages = [];
+
+  Future<void> logout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth_token'); // Remove the token on logout
+
+    // Navigate back to the login screen
+    Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
+  }
 
   @override
   void initState() {

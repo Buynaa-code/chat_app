@@ -11,13 +11,14 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isObscured = false;
+  bool _isObscured = true;
 
   final AuthRepository _authRepository =
       AuthRepository(); // Create instance of AuthRepository
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       // Call login method from AuthRepository
       final loginResponse = await _authRepository.login(username, password);
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             backgroundColor: successColor4,
@@ -45,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       // Navigate to ChatScreen after successful login
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (context) => const ChatScreen(),
