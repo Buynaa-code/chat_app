@@ -1,3 +1,4 @@
+import 'package:chat_app/service/login/repository/auth_repository.dart';
 import 'package:chat_app/const/colors.dart';
 import 'package:chat_app/const/spacing.dart';
 import 'package:chat_app/const/text_field.dart';
@@ -10,7 +11,6 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -18,6 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscured = false;
+
+  final AuthRepository _authRepository =
+      AuthRepository(); // Create instance of AuthRepository
 
   Future<void> login() async {
     final username = _usernameController.text;
@@ -32,13 +35,15 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      // Make the login call to the backend
-
-      // If login is successful, navigate to the ChatScreen
+      // Call login method from AuthRepository
+      final loginResponse = await _authRepository.login(username, password);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Амжилтаай нэвтэрлээ!')),
+        SnackBar(
+            backgroundColor: successColor4,
+            content: Text('Амжилтай нэвтэрлээ!',
+                style: ktsBodyMediumBold.copyWith(color: whiteColor))),
       );
-      // Navigate to ChatScreen
+      // Navigate to ChatScreen after successful login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -48,7 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       // Handle login failure
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: $e')),
+        SnackBar(
+            backgroundColor: dangerColor5,
+            content: Text(
+              'Та нууц үг болон утасны дугаараа шалгана уу!',
+              style: ktsBodyMediumBold.copyWith(color: whiteColor),
+            )),
       );
     }
   }
