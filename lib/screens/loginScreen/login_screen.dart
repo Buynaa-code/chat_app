@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } catch (e) {
-      // Handle login failure
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             backgroundColor: dangerColor5,
@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
@@ -77,48 +78,48 @@ class _LoginScreenState extends State<LoginScreen> {
             colors: [Color(0xFF6A95FF), Color(0xFFFFE29F)],
           ),
         ),
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.arrow_back_ios, color: greyColor5),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Буцах',
-                        style: ktsBodyMediumBold.copyWith(color: greyColor5),
+        child: SingleChildScrollView(
+          // Wrap Column with SingleChildScrollView
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: whiteColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_back_ios, color: greyColor5),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Буцах',
+                          style: ktsBodyMediumBold.copyWith(color: greyColor5),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            Expanded(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.6,
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              Container(
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: whiteColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -130,19 +131,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Тавтай морилно уу!',
+                      Text('Нэвтрэх',
                           style: ktsBodyMassivePlusSemiBold.copyWith(
                               color: greyColor8)),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Өөрийн утасны дугаар болон нууц үгээ хийнэ үү',
-                        style: ktsBodyMedium.copyWith(color: greyColor4),
-                      ),
-                      const SizedBox(height: 30),
-                      // TextField for the username
+                      h8(),
+                      Text('Өөрийн мэдээллээ оруулна уу',
+                          style: ktsBodyMedium.copyWith(color: greyColor4)),
+                      const SizedBox(height: 20),
+                      // Username TextField
                       TextField(
-                        controller: _usernameController, // Add controller here
-                        cursorColor: informationColor8,
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           hintText: 'Утасны дугаар',
                           hintStyle: ktsBodyMedium.copyWith(color: greyColor4),
@@ -154,12 +152,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      // TextField for the password
+                      h8(),
+                      // Password TextField
                       TextField(
-                        controller: _passwordController, // Add controller here
-                        cursorColor: informationColor8,
-                        obscureText: _isObscured,
+                        controller: _passwordController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Нууц үг',
                           hintStyle: ktsBodyMedium.copyWith(color: greyColor4),
@@ -169,7 +166,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
                           ),
-                          // Add the visibility toggle icon
                           suffixIcon: IconButton(
                             icon: Icon(
                               _isObscured
@@ -185,10 +181,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+
                       h48(),
-                      // Login button that calls the login function
+                      // Register Button
                       ElevatedButton(
-                        onPressed: login, // Use the login function here
+                        onPressed: login, // Trigger registration
                         style: ElevatedButton.styleFrom(
                           backgroundColor: informationColor8,
                           padding: const EdgeInsets.symmetric(
@@ -221,8 +218,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

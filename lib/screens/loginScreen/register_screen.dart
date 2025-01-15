@@ -16,14 +16,17 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
 
-  bool _isObscured = false;
+  bool _isObscured = true;
+  bool isObscured = true;
 
   // Register function to handle the registration request
   Future<void> register() async {
     final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
-
+    final String passwordConfirm = _passwordConfirmController.text.trim();
     // Оруулах утгуудыг шалгах
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -40,6 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         body: json.encode({
           'username': username,
           'password': password,
+          'passwordConfirm': passwordConfirm,
         }),
       );
 
@@ -78,6 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: whiteColor,
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(
@@ -86,47 +91,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
             colors: [Color(0xFF6A95FF), Color(0xFFFFE29F)],
           ),
         ),
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.arrow_back_ios, color: greyColor5),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Буцах',
-                        style: ktsBodyMediumBold.copyWith(color: greyColor5),
+        child: SingleChildScrollView(
+          // Wrap Column with SingleChildScrollView
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: whiteColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.arrow_back_ios, color: greyColor5),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Буцах',
+                          style: ktsBodyMediumBold.copyWith(color: greyColor5),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            h48(),
-            Expanded(
-              child: Container(
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              h48(),
+              Container(
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: whiteColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -188,6 +194,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                       ),
+                      h8(),
+                      // Password TextField
+                      TextField(
+                        controller: _passwordConfirmController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Нууц үгээ давтана уу',
+                          hintStyle: ktsBodyMedium.copyWith(color: greyColor4),
+                          filled: true,
+                          fillColor: greyColor1,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isObscured
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            color: greyColor5,
+                            onPressed: () {
+                              setState(() {
+                                isObscured = !isObscured; // Toggle the state
+                              });
+                            },
+                          ),
+                        ),
+                      ),
 
                       h48(),
                       // Register Button
@@ -203,15 +238,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         child: Text(
                           'Бүртгүүлэх',
-                          style: ktsBodyLarge.copyWith(color: whiteColor),
+                          style: ktsBodyLargeBold.copyWith(color: whiteColor),
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
