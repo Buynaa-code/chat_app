@@ -1,3 +1,5 @@
+// login_bloc.dart
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'login_event.dart';
 import 'login_state.dart';
@@ -14,8 +16,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapLoginRequestedToState(
       String username, String password) async* {
+    // Dummy authentication for simplicity
     if (username == "admin" && password == "password") {
-      yield LoginSuccess();
+      yield LoggedIn(); // Yield the LoggedIn state on successful login
     } else {
       yield LoginFailure("Invalid username or password");
     }

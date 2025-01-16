@@ -27,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
     final String passwordConfirm = _passwordConfirmController.text.trim();
-    // Оруулах утгуудыг шалгах
+
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Бүх талбарыг бөглөнө үү')),
@@ -36,7 +36,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     try {
-      const url = 'http://localhost:5001/register';
+      // Сүлжээний хаягийг зөв тохируулах
+      const String url =
+          'http://10.0.2.2:5001/register'; // Emulator-т зориулсан localhost
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
@@ -47,34 +49,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }),
       );
 
-      // Бүртгэл амжилттай болсон эсэхийг шалгах
+      // Амжилттай бүртгэсэн эсэхийг шалгах
       if (response.statusCode == 201) {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Хэрэглэгч амжилттай бүртгэгдлээ!')),
         );
-        // Өмнөх дэлгэц рүү буцах
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
-      } else if (response.statusCode == 409) {
-        // Хэрэглэгч аль хэдийн бүртгэгдсэн
-        // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Хэрэглэгч аль хэдийн бүртгэгдсэн!')),
-        );
+        Navigator.pop(context); // Өмнөх дэлгэц рүү буцах
       } else {
-        // Бусад алдаа
-        // ignore: use_build_context_synchronously
+        // Серверээс ирсэн алдааны мэдээллийг харуулах
+        final Map<String, dynamic> responseBody = json.decode(response.body);
+        final String errorMessage = responseBody['message'] ??
+            'Бүртгэл амжилтгүй боллоо. Дахин оролдоно уу!';
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Бүртгэл амжилтгүй боллоо. Дахин оролдоно уу!')),
+          SnackBar(content: Text(errorMessage)),
         );
       }
     } catch (e) {
-      // Сүлжээний алдаа
-      // ignore: use_build_context_synchronously
+      // Сүлжээний алдааг харуулах
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Алдаа: $e')),
+        SnackBar(content: Text('Сүлжээний алдаа: $e')),
       );
     }
   }

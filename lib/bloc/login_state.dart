@@ -9,3 +9,5 @@ class LoginFailure extends LoginState {
 
   LoginFailure(this.errorMessage);
 }
+
+class LoggedIn extends LoginState {}

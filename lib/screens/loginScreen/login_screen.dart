@@ -1,8 +1,9 @@
-import 'package:chat_app/service/login/repository/auth_repository.dart';
+import 'package:chat_app/screens/widget/bottom_navigation.dart';
+
 import 'package:chat_app/const/colors.dart';
 import 'package:chat_app/const/spacing.dart';
 import 'package:chat_app/const/text_field.dart';
-import 'package:chat_app/screens/chat_screen.dart';
+
 import 'package:chat_app/screens/loginScreen/register_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -20,9 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscured = true;
 
-  final AuthRepository _authRepository =
-      AuthRepository(); // Create instance of AuthRepository
-
   Future<void> login() async {
     final username = _usernameController.text;
     final password = _passwordController.text;
@@ -30,38 +28,38 @@ class _LoginScreenState extends State<LoginScreen> {
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Утасны дугаар болон нууц үгээ оруулна уу ')),
+            content: Text('Утасны дугаар болон нууц үгээ оруулна уу')),
       );
       return;
     }
 
     try {
       // Call login method from AuthRepository
-      final loginResponse = await _authRepository.login(username, password);
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            backgroundColor: successColor4,
-            content: Text('Амжилтай нэвтэрлээ!',
-                style: ktsBodyMediumBold.copyWith(color: whiteColor))),
+          backgroundColor: successColor4,
+          content: Text('Амжилтай нэвтэрлээ!',
+              style: ktsBodyMediumBold.copyWith(color: whiteColor)),
+        ),
       );
-      // Navigate to ChatScreen after successful login
+
+      // Navigate to BottomNavigationDemo (Home Screen) after successful login
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
-          builder: (context) => const ChatScreen(),
+          builder: (context) =>
+              const BottomNavigationDemo(), // Use BottomNavigationDemo here
         ),
       );
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            backgroundColor: dangerColor5,
-            content: Text(
-              'Та нууц үг болон утасны дугаараа шалгана уу!',
-              style: ktsBodyMediumBold.copyWith(color: whiteColor),
-            )),
+          backgroundColor: dangerColor5,
+          content: Text(
+            'Та нууц үг болон утасны дугаараа шалгана уу!',
+            style: ktsBodyMediumBold.copyWith(color: whiteColor),
+          ),
+        ),
       );
     }
   }

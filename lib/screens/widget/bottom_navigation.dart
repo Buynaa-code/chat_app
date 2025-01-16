@@ -1,7 +1,15 @@
+import 'package:chat_app/const/colors.dart';
+import 'package:chat_app/const/text_field.dart';
+import 'package:chat_app/screens/main/home_screen.dart';
+import 'package:chat_app/screens/main/profile_screen.dart';
+import 'package:chat_app/screens/main/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigationDemo extends StatefulWidget {
+  const BottomNavigationDemo({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _BottomNavigationDemoState createState() => _BottomNavigationDemoState();
 }
 
@@ -9,42 +17,59 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    HomeScreen(),
-    SearchScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const SearchScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         child: _pages[_currentIndex],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: AnimatedIconWidget(iconData: Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: AnimatedIconWidget(iconData: Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: AnimatedIconWidget(iconData: Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: Colors.blueAccent,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: false,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: greyColor8,
+          boxShadow: [
+            BoxShadow(
+              color: greyColor8.withOpacity(0.2),
+              spreadRadius: 0,
+              blurRadius: 10,
+              offset: const Offset(0, -3),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: AnimatedIconWidget(iconData: Icons.home),
+              label: 'Нүүр',
+            ),
+            BottomNavigationBarItem(
+              icon: AnimatedIconWidget(iconData: Icons.search),
+              label: 'Хайх',
+            ),
+            BottomNavigationBarItem(
+              icon: AnimatedIconWidget(iconData: Icons.person),
+              label: 'Бүртгэл',
+            ),
+          ],
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.white60,
+          showUnselectedLabels: false,
+          selectedLabelStyle: ktsBodySmall,
+          unselectedLabelStyle: ktsBodySmall,
+        ),
       ),
     );
   }
@@ -53,10 +78,10 @@ class _BottomNavigationDemoState extends State<BottomNavigationDemo> {
 class AnimatedIconWidget extends StatefulWidget {
   final IconData iconData;
 
-  const AnimatedIconWidget({Key? key, required this.iconData})
-      : super(key: key);
+  const AnimatedIconWidget({super.key, required this.iconData});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AnimatedIconWidgetState createState() => _AnimatedIconWidgetState();
 }
 
@@ -80,7 +105,7 @@ class _AnimatedIconWidgetState extends State<AnimatedIconWidget>
   Widget build(BuildContext context) {
     return ScaleTransition(
       scale: _animation,
-      child: Icon(widget.iconData),
+      child: Icon(widget.iconData, size: 28),
     );
   }
 
@@ -88,50 +113,5 @@ class _AnimatedIconWidgetState extends State<AnimatedIconWidget>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.lightBlueAccent,
-      child: Center(
-        child: Text(
-          'Home Page',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class SearchScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.teal,
-      child: Center(
-        child: Text(
-          'Search Page',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepPurple,
-      child: Center(
-        child: Text(
-          'Profile Page',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      ),
-    );
   }
 }
